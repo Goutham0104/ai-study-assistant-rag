@@ -1,72 +1,71 @@
+import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { settingsOptions } from '../data/mockData'
-import { ArrowRight, Bell, Lock, Moon, User } from 'lucide-react'
 
 function SettingsPage() {
-  const iconFor = (label) => {
-    if (label === 'Profile') return <User className="h-5 w-5 text-sky-300" />
-    if (label === 'Theme & Appearance') return <Moon className="h-5 w-5 text-sky-300" />
-    if (label === 'API Settings') return <Lock className="h-5 w-5 text-sky-300" />
-    if (label === 'Notifications') return <Bell className="h-5 w-5 text-sky-300" />
-    return null
-  }
-
   return (
-    <main className="space-y-8">
-      <section className="section-card p-8">
+    <main className="space-y-6 pb-8">
+      <section className="surface-card-strong p-6 sm:p-8 lg:p-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-sky-300">Settings</p>
-            <h1 className="mt-2 text-3xl font-semibold text-white">Workspace preferences</h1>
-            <p className="mt-3 text-sm leading-7 text-slate-400">Manage theme, profile details, API settings, notifications, and security for your study assistant.</p>
+            <span className="hero-pill">Settings</span>
+            <h1 className="mt-5 text-4xl font-semibold text-[var(--text)] lg:text-[40px]">Workspace preferences</h1>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--muted)]">Manage theme, profile details, API settings, notifications, and security for your study assistant.</p>
           </div>
           <button className="btn-primary">Save changes</button>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {settingsOptions.map((item) => (
-            <div key={item.label} className="rounded-[24px] border border-slate-800 bg-slate-950/95 p-6 shadow-soft transition hover:border-sky-400/30 hover:bg-slate-900/95">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.24em] text-slate-400">{item.label}</p>
-                  <p className="mt-2 text-white">{item.description}</p>
+          {settingsOptions.map((item) => {
+            const Icon = item.icon
+            return (
+              <div key={item.label} className="rounded-[22px] border border-[rgba(31,41,55,0.08)] bg-white/85 p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-[rgba(198,106,61,0.18)] hover:bg-white">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#8a4a2a]">{item.label}</p>
+                    <p className="mt-2 text-[var(--text)]">{item.description}</p>
+                  </div>
+                  <Icon className="h-5 w-5 text-[#8a4a2a]" />
                 </div>
-                {iconFor(item.label)}
+                <div className="mt-6 flex items-center justify-between rounded-[18px] bg-[rgba(198,106,61,0.05)] px-4 py-4">
+                  <p className="text-sm text-[var(--muted)]">Manage {item.label.toLowerCase()}</p>
+                  <ArrowRight className="h-4 w-4 text-[#8a4a2a]" />
+                </div>
               </div>
-              <div className="mt-6 flex items-center justify-between rounded-[20px] bg-slate-900/90 px-4 py-4">
-                <p className="text-sm text-slate-300">Manage {item.label.toLowerCase()}</p>
-                <ArrowRight className="h-4 w-4 text-slate-300" />
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-[24px] border border-slate-800 bg-slate-950/95 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.28em] text-sky-300">Profile</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Account overview</h2>
+      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="surface-card-strong p-6 sm:p-7">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#8a4a2a]">Profile</p>
+          <h2 className="mt-2 text-2xl font-semibold text-[var(--text)]">Account overview</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-[20px] bg-slate-900/90 p-5">
-              <p className="text-sm text-slate-400">Username</p>
-              <p className="mt-2 text-lg font-semibold text-white">student.engineer</p>
+            <div className="rounded-[18px] bg-[rgba(198,106,61,0.05)] p-5">
+              <p className="text-sm text-[var(--muted)]">Username</p>
+              <p className="mt-2 text-lg font-semibold text-[var(--text)]">student.engineer</p>
             </div>
-            <div className="rounded-[20px] bg-slate-900/90 p-5">
-              <p className="text-sm text-slate-400">Email</p>
-              <p className="mt-2 text-lg font-semibold text-white">student@example.com</p>
+            <div className="rounded-[18px] bg-[rgba(198,106,61,0.05)] p-5">
+              <p className="text-sm text-[var(--muted)]">Email</p>
+              <p className="mt-2 text-lg font-semibold text-[var(--text)]">student@example.com</p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-[24px] border border-slate-800 bg-slate-950/95 p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.28em] text-sky-300">API Access</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Integration keys</h2>
-          <p className="mt-4 text-sm text-slate-400">Use your API key to connect the AI assistant with external services and tools.</p>
-          <div className="mt-6 rounded-[20px] border border-slate-800 bg-slate-900/90 p-5">
+        <div className="surface-card-strong p-6 sm:p-7">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#8a4a2a]">API Access</p>
+          <h2 className="mt-2 text-2xl font-semibold text-[var(--text)]">Integration keys</h2>
+          <p className="mt-4 text-sm text-[var(--muted)]">Use your API key to connect the AI assistant with external services and tools.</p>
+          <div className="mt-6 rounded-[20px] border border-[rgba(31,41,55,0.08)] bg-white/85 p-5 shadow-sm">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-sm text-slate-300">Current API Key</p>
+              <p className="text-sm text-[var(--muted)]">Current API Key</p>
               <button className="btn-secondary">Regenerate</button>
             </div>
-            <p className="mt-3 text-base font-semibold text-white">••••••••••••••••••••••••</p>
+            <p className="mt-3 text-base font-semibold text-[var(--text)]">••••••••••••••••••••••••</p>
+          </div>
+          <div className="mt-4 rounded-[20px] bg-[rgba(198,106,61,0.05)] p-4 text-sm text-[var(--muted)]">
+            <div className="flex items-center gap-2 font-semibold text-[var(--text)]"><ShieldCheck className="h-4 w-4 text-[#8a4a2a]" /> Security posture</div>
+            <p className="mt-2">Workspace settings are presented with clear hierarchy and restrained emphasis.</p>
           </div>
         </div>
       </section>

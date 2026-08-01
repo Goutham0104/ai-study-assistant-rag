@@ -1,12 +1,9 @@
 import {
   Activity,
-  ArrowRight,
   BarChart3,
   Bell,
-  BookOpen,
   CheckCircle2,
   CircleDashed,
-  Cpu,
   Database,
   FileText,
   Layers,

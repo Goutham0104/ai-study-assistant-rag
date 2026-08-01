@@ -1,15 +1,23 @@
 import { NavLink } from 'react-router-dom'
+import { ArrowRight, ChevronRight, Shield, Sparkles } from 'lucide-react'
 import { navLinks } from '../data/mockData'
 
-function Sidebar() {
+function Sidebar({ theme, onToggleTheme }) {
   return (
-    <aside className="rounded-[32px] border border-slate-800 bg-slate-950/95 shadow-[0_40px_120px_rgba(8,12,20,0.35)] lg:sticky lg:top-6 z-20">
-      <div className="flex min-h-full flex-col justify-between gap-6 px-5 py-6">
+    <aside className="sticky top-4 z-20 h-fit rounded-[30px] border border-[var(--border)] bg-[var(--surface)] shadow-soft backdrop-blur-xl">
+      <div className="flex min-h-full flex-col justify-between gap-6 p-5 lg:p-6">
         <div className="space-y-6">
-          <div className="rounded-[28px] border border-slate-800 bg-slate-900/95 p-5 shadow-[0_24px_60px_rgba(8,12,20,0.25)]">
-            <p className="text-xs uppercase tracking-[0.35em] text-sky-300">AI Study Assistant</p>
-            <h1 className="mt-3 text-2xl font-semibold text-white">Study Studio</h1>
-            <p className="mt-3 text-sm leading-6 text-slate-400">Smart PDF workflows for engineering learners.</p>
+          <div className="surface-card-strong p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#c66a3d_0%,#9f4f2a_100%)] text-white shadow-glow">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#8a4a2a]">AI Study Assistant</p>
+                <h1 className="mt-1 text-2xl font-semibold text-[var(--text)]">Study Studio</h1>
+              </div>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-[var(--muted)]">Premium RAG workflows for documents, conversations, and study analytics.</p>
           </div>
 
           <nav className="grid gap-2">
@@ -21,27 +29,38 @@ function Sidebar() {
                   to={link.to}
                   end={link.to === '/'}
                   className={({ isActive }) =>
-                    `group flex items-center gap-3 rounded-[18px] px-4 py-3 text-sm font-semibold transition duration-300 ${
+                    `group flex items-center justify-between rounded-[18px] border px-4 py-3 text-sm font-semibold transition duration-300 ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#6366F1] to-[#7C3AED] text-white shadow-[0_20px_60px_rgba(99,102,241,0.2)]'
-                        : 'text-slate-400 hover:bg-slate-900/80 hover:text-white'
+                        ? 'border-[rgba(198,106,61,0.16)] bg-[rgba(198,106,61,0.08)] text-[#8a4a2a] shadow-sm'
+                        : 'border-transparent bg-transparent text-[var(--muted)] hover:border-[rgba(31,41,55,0.08)] hover:bg-white hover:text-[var(--text)]'
                     }`
                   }
                 >
-                  <Icon className="h-5 w-5" />
-                  {link.label}
+                  <span className="flex items-center gap-3">
+                    <Icon className="h-4 w-4" />
+                    {link.label}
+                  </span>
+                  <ChevronRight className="h-4 w-4 opacity-40 transition group-hover:translate-x-0.5 group-hover:opacity-70" />
                 </NavLink>
               )
             })}
           </nav>
         </div>
 
-        <div className="rounded-[28px] border border-slate-800 bg-slate-900/90 p-5 text-sm text-slate-400 shadow-[0_18px_50px_rgba(8,12,20,0.25)]">
-          <p className="text-xs uppercase tracking-[0.35em] text-sky-300">Profile</p>
-          <p className="mt-3 font-semibold text-white">John Doe</p>
-          <p className="mt-2 text-sm text-slate-400">Engineering student refining PDF learning workflows.</p>
-          <button className="mt-5 w-full rounded-full bg-gradient-to-r from-[#6366F1] to-[#7C3AED] px-4 py-3 text-sm font-semibold text-white shadow-glow transition duration-300 hover:opacity-95">
-            Theme Toggle
+        <div className="surface-card-strong p-5 text-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(198,106,61,0.08)] text-[#8a4a2a]">
+              <Shield className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#8a4a2a]">Profile</p>
+              <p className="mt-1 font-semibold text-[var(--text)]">John Doe</p>
+            </div>
+          </div>
+          <p className="mt-4 leading-6 text-[var(--muted)]">Engineering learner workspace with secure, grounded answers.</p>
+          <button className="btn-secondary mt-5 w-full justify-between" onClick={onToggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
