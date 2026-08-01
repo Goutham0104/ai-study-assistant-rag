@@ -55,6 +55,3 @@ npm run build
 - `src/App.jsx` — router and layout
 - `src/index.css` — Tailwind setup and global styles
 
-## Notes
-
-This is a frontend-only prototype with mock data. The UI is designed to be extended into a complete RAG application later.
