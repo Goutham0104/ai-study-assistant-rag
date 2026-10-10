@@ -1,17 +1,93 @@
-import { ArrowRight, CheckCircle2, FileText, Upload, Wand2 } from 'lucide-react'
-import { uploadedPdfs } from '../data/mockData'
+import { useRef, useState } from 'react'
+import { ArrowRight, CheckCircle2, FileText, Loader2, Upload, Wand2 } from 'lucide-react'
+import { uploadedPdfs as initialUploadedPdfs } from '../data/mockData'
 
 const supportedFormats = ['PDF', 'TXT', 'DOCX']
 
 function UploadPage() {
+  const fileInputRef = useRef(null)
+  const [documentsList, setDocumentsList] = useState(initialUploadedPdfs)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState(null) // { type: 'success' | 'error', message: string }
+
   const statusStyles = (status) => {
     if (status === 'Indexed') return 'bg-emerald-50 text-emerald-700 border-emerald-100'
     if (status === 'Processing') return 'bg-amber-50 text-amber-700 border-amber-100'
     return 'bg-slate-50 text-slate-600 border-slate-200'
   }
 
+  const handleOpenPicker = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Reset input so re-selecting same file triggers onChange
+    event.target.value = ''
+
+    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+      setUploadStatus({
+        type: 'error',
+        message: 'Please select a valid PDF file.',
+      })
+      return
+    }
+
+    setIsUploading(true)
+    setUploadStatus(null)
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'Upload failed')
+      }
+
+      setUploadStatus({
+        type: 'success',
+        message: `Successfully uploaded "${data.filename}" (${data.total_pages} page${data.total_pages === 1 ? '' : 's'}, ${data.total_chunks} chunks).`,
+      })
+
+      setDocumentsList((prev) => [
+        {
+          name: data.filename,
+          pages: data.total_pages,
+          status: 'Indexed',
+          progress: 100,
+        },
+        ...prev.filter((doc) => doc.name !== data.filename),
+      ])
+    } catch (err) {
+      setUploadStatus({
+        type: 'error',
+        message: err.message || 'Failed to upload PDF. Please check server connection.',
+      })
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
   return (
     <main className="space-y-6 pb-8">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="application/pdf,.pdf"
+        className="hidden"
+        onChange={handleFileChange}
+      />
       <section className="surface-card-strong p-6 sm:p-8 lg:p-10">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-3xl">
@@ -21,11 +97,37 @@ function UploadPage() {
               Bring lecture notes, lab reports, and exam practice papers into one searchable AI workspace.
             </p>
           </div>
-          <button className="btn-primary">
-            Upload PDF
-            <Upload className="ml-2 h-4 w-4" />
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={handleOpenPicker}
+            disabled={isUploading}
+          >
+            {isUploading ? (
+              <>
+                Uploading...
+                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+              </>
+            ) : (
+              <>
+                Upload PDF
+                <Upload className="ml-2 h-4 w-4" />
+              </>
+            )}
           </button>
         </div>
+
+        {uploadStatus && (
+          <div
+            className={`mt-6 rounded-[18px] border p-4 text-sm font-medium ${
+              uploadStatus.type === 'success'
+                ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                : 'border-red-200 bg-red-50 text-red-800'
+            }`}
+          >
+            {uploadStatus.message}
+          </div>
+        )}
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
           <div className="surface-card-strong subtle-grid border-dashed p-8 text-center sm:p-10">
@@ -38,7 +140,12 @@ function UploadPage() {
                 Upload PDF lecture notes, textbooks, and study guides to build a reference-ready knowledge base instantly.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <button className="btn-secondary">
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={handleOpenPicker}
+                  disabled={isUploading}
+                >
                   Select files
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
@@ -80,7 +187,7 @@ function UploadPage() {
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {uploadedPdfs.map((file) => (
+          {documentsList.map((file) => (
             <div key={file.name} className="rounded-[22px] border border-[rgba(31,41,55,0.08)] bg-white/85 p-5 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-[rgba(198,106,61,0.18)]">
               <div className="flex items-center justify-between gap-3">
                 <div>

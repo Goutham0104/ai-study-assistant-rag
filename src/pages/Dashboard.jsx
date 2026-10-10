@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { BarChart3, Clock3, FileText, Send, Sparkles, Upload } from 'lucide-react'
 import { recentActivity, documents, workflowSteps, quickActions, activityTrend } from '../data/mockData'
@@ -13,6 +14,8 @@ const overviewCards = [
 ]
 
 function Dashboard() {
+  const navigate = useNavigate()
+
   return (
     <main className="space-y-6 pb-8">
       <section className="surface-card-strong overflow-hidden p-6 sm:p-8 lg:p-10">
@@ -26,8 +29,8 @@ function Dashboard() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button className="btn-secondary">New chat</button>
-            <button className="btn-primary">
+            <button className="btn-secondary" onClick={() => navigate('/chat')}>New chat</button>
+            <button className="btn-primary" onClick={() => navigate('/upload')}>
               Upload PDF
               <Upload className="ml-2 h-4 w-4" />
             </button>
