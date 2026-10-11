@@ -26,7 +26,7 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 # Determine active provider and default model
 if GROQ_API_KEY:
     PROVIDER = "groq"
-    MODEL_NAME = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
+    MODEL_NAME = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
 elif OPENAI_API_KEY:
     PROVIDER = "openai"
     MODEL_NAME = os.getenv("LLM_MODEL", "gpt-4o-mini")
