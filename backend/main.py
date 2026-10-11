@@ -6,6 +6,7 @@ and sets up basic logging.
 """
 
 import logging
+import os
 import sys
 
 from fastapi import FastAPI
@@ -35,18 +36,34 @@ app = FastAPI(
 )
 
 # ---------- CORS ----------
-# Allow the Vite dev server and common local origins
-ALLOWED_ORIGINS = [
-    "http://localhost:5173",   # Vite default
-    "http://localhost:5174",   # Vite fallback port
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:5174",
-    "http://localhost:3000",   # common alternative
-]
+# Allow the Vite dev server, production frontend (Vercel), and custom origins
+env_origins = os.getenv("ALLOWED_ORIGINS", "")
+if env_origins.strip() == "*":
+    ALLOWED_ORIGINS = ["*"]
+else:
+    ALLOWED_ORIGINS = [
+        "http://localhost:5173",   # Vite default
+        "http://localhost:5174",   # Vite fallback port
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://localhost:3000",   # common alternative
+        "https://ai-study-assistant-rag.vercel.app",  # Production Vercel frontend
+        "https://ai-study-assistant-rag-gamma.vercel.app",  # New Vercel frontend URL
+    ]
+    if env_origins:
+        ALLOWED_ORIGINS.extend([origin.strip() for origin in env_origins.split(",") if origin.strip()])
+
+# If FRONTEND_URL is specified (e.g., custom domain), include it
+frontend_url = os.getenv("FRONTEND_URL", "").strip().rstrip("/")
+if frontend_url and frontend_url not in ALLOWED_ORIGINS:
+    ALLOWED_ORIGINS.append(frontend_url)
+
+allow_all = "*" in ALLOWED_ORIGINS
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origins=["*"] if allow_all else ALLOWED_ORIGINS,
+    allow_origin_regex=None if allow_all else r"https:\/\/.*\.vercel\.app",  # Support preview deployments on Vercel
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

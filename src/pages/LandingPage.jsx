@@ -78,8 +78,8 @@ function LandingPage({ theme, onToggleTheme }) {
             <button className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.5)] text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[rgba(198,106,61,0.18)] hover:bg-[rgba(198,106,61,0.06)]" aria-label="Profile">
               <Users className="h-4 w-4" />
             </button>
-            <Link to="/dashboard" className="btn-primary min-w-0 px-5 py-2.5">
-              Get Started Free
+            <Link to="/upload" className="btn-primary min-w-0 px-5 py-2.5">
+              Upload PDF
             </Link>
           </div>
         </div>
@@ -96,13 +96,13 @@ function LandingPage({ theme, onToggleTheme }) {
             Upload engineering PDFs. Ask AI. Receive instant answers grounded in your documents using Retrieval-Augmented Generation.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link to="/dashboard" className="btn-primary text-base">
-              Start Free
+            <Link to="/upload" className="btn-primary text-base">
+              Upload PDF & Start
               <ArrowRight className="ml-3 h-4 w-4" />
             </Link>
-            <a href="#how-it-works" className="btn-secondary text-base">
-              Watch Demo
-            </a>
+            <Link to="/dashboard" className="btn-secondary text-base">
+              Explore Dashboard
+            </Link>
           </div>
 
           <div className="mt-12 grid gap-4 rounded-[28px] border border-[rgba(31,41,55,0.08)] bg-white/72 p-5 shadow-soft backdrop-blur-md sm:grid-cols-3">

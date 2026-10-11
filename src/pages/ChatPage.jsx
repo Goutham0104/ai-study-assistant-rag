@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { chatHistory, chatMessages as initialChatMessages, suggestedPrompts } from '../data/mockData'
 import { AlertCircle, BookOpen, CheckCheck, Copy, Loader2, RefreshCw, Search, Send, Sparkles } from 'lucide-react'
+import { API_ENDPOINTS } from '../config/api'
 
 function ChatPage() {
   const [messages, setMessages] = useState([])
@@ -25,7 +26,7 @@ function ChatPage() {
   useEffect(() => {
     const fetchDocs = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/documents')
+        const res = await fetch(API_ENDPOINTS.DOCUMENTS)
         if (res.ok) {
           const data = await res.json()
           if (data.documents && Array.isArray(data.documents)) {
@@ -101,7 +102,7 @@ function ChatPage() {
         payload.document_filename = docToQuery
       }
 
-      const response = await fetch('http://127.0.0.1:8000/api/chat', {
+      const response = await fetch(API_ENDPOINTS.CHAT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

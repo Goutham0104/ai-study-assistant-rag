@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from services.document_store import store
-from services.ollama_client import chat_with_ollama
+from services.ollama_client import chat_with_ollama, MODEL_NAME
 from services.retriever import retrieve_relevant_chunks
 
 router = APIRouter()
@@ -87,7 +87,7 @@ async def chat(request: ChatRequest):
                 "Please verify your query or select a document containing this topic."
             ),
             sources=[],
-            model="gemma3:4b",
+            model=MODEL_NAME,
             chunks_used=0,
         )
 
@@ -140,6 +140,6 @@ async def chat(request: ChatRequest):
     return ChatResponse(
         answer=answer,
         sources=sources,
-        model="gemma3:4b",
+        model=MODEL_NAME,
         chunks_used=len(relevant),
     )

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ai-study-assistant-backend
+    runtime: python
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ALLOWED_ORIGINS
+        value: "https://ai-study-assistant-rag.vercel.app,https://ai-study-assistant-rag-gamma.vercel.app"
+      - key: FRONTEND_URL
+        value: "https://ai-study-assistant-rag-gamma.vercel.app"
+      - key: GROQ_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: "llama-3.3-70b-versatile"
