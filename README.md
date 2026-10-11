@@ -2,9 +2,9 @@
 
 A full-stack AI-powered study assistant designed to help engineering students learn from their study materials. Users can upload PDF documents and ask questions about their content. The application retrieves relevant passages and uses a Large Language Model (LLM) to generate document-grounded answers with source-page references.
 
-## 🌐 Live Website
+## 🌐 Live Demo
 
-**Try the application:** https://ai-study-assistant-rag.vercel.app/
+**Try the application:** https://ai-study-assistant-rag-gamma.vercel.app/
 
 ## 📂 GitHub Repository
 
